@@ -1,7 +1,8 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using SDRSharp.Common;
 
-namespace SDRSharp.Empty
+namespace SDRSharp.FreqToProscan
 {
     public class FreqToProscanPlugin : ISharpPlugin, ICanLazyLoadGui, IExtendedNameProvider
     {
@@ -11,25 +12,57 @@ namespace SDRSharp.Empty
         public string Category => "Proscan";        
         public string MenuItemName => DisplayName;
 
+        public IFreqToProscanService _freqToProscanService;
+
         public UserControl Gui
         {
             get
             {
-                LoadGui();
+                if (IsGUINotExist())
+                    LoadGui();
+
                 return _gui;
             }
         }
 
+        public FreqToProscanPlugin()
+        {
+            _freqToProscanService = new FreqToProscanService();
+        }
+
+        private bool IsGUINotExist() => _gui == null;
+
         public void LoadGui()
         {
-            if (_gui == null)
-            {
-                _gui = new ControlPanel();
-            }
+            _gui = new ControlPanel();
+            SubscribeGUIEvents();
         }
 
         public void Initialize(ISharpControl control) { }
 
         public void Close() { }
+
+        private void SubscribeGUIEvents()
+        {
+            _gui.HandleDestroyed += _gui_HandleDestroyed;
+            _gui.OnDataUpdateNeed += UpdateData;
+        }
+
+        private void UnsubscribeGUIEvents()
+        {
+            _gui.HandleDestroyed -= _gui_HandleDestroyed;
+            _gui.OnDataUpdateNeed -= UpdateData;
+        }
+
+        private void _gui_HandleDestroyed(object sender, EventArgs e)
+        {
+            UnsubscribeGUIEvents();
+        }
+
+        private void UpdateData()
+        {
+            _freqToProscanService.UpdateData();
+            _gui.UpdateGUIData(_freqToProscanService.GetData);
+        }
     }
 }
