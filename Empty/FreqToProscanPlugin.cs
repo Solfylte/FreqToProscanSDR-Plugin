@@ -1,21 +1,15 @@
 ﻿using System.Windows.Forms;
 using SDRSharp.Common;
-using SDRSharp.Radio;
 
 namespace SDRSharp.Empty
 {
-    public class FreqToProscanPlugin : ISharpPlugin, ICanLazyLoadGui, ISupportStatus, IExtendedNameProvider
+    public class FreqToProscanPlugin : ISharpPlugin, ICanLazyLoadGui, IExtendedNameProvider
     {
         private ControlPanel _gui;
-        private ISharpControl _control;
 
-        public string DisplayName => "Freq Manager To ProScan";
-        
-        public string Category => "Proscan";
-        
+        public string DisplayName => "Freq Manager To ProScan";        
+        public string Category => "Proscan";        
         public string MenuItemName => DisplayName;
-        
-        public bool IsActive => _gui != null && _gui.Visible;
 
         public UserControl Gui
         {
@@ -30,17 +24,12 @@ namespace SDRSharp.Empty
         {
             if (_gui == null)
             {
-                _gui = new ControlPanel(_control);
+                _gui = new ControlPanel();
             }
         }
 
-        public void Initialize(ISharpControl control)
-        {
-            _control = control;
-        }
+        public void Initialize(ISharpControl control) { }
 
-        public void Close()
-        {
-        }
+        public void Close() { }
     }
 }
