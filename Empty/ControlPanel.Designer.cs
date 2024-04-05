@@ -28,9 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBoxFreq = new System.Windows.Forms.TextBox();
             buttonUpdate = new System.Windows.Forms.Button();
+            buttonCopy = new System.Windows.Forms.Button();
+            textBoxFreq = new System.Windows.Forms.TextBox();
             SuspendLayout();
+            // 
+            // buttonUpdate
+            // 
+            buttonUpdate.Location = new System.Drawing.Point(20, 3);
+            buttonUpdate.Name = "buttonUpdate";
+            buttonUpdate.Size = new System.Drawing.Size(242, 46);
+            buttonUpdate.TabIndex = 1;
+            buttonUpdate.Text = "Update";
+            buttonUpdate.UseVisualStyleBackColor = true;
+            buttonUpdate.Click += buttonUpdate_Click;
+            // 
+            // buttonCopy
+            // 
+            buttonCopy.Location = new System.Drawing.Point(276, 3);
+            buttonCopy.Name = "buttonCopy";
+            buttonCopy.Size = new System.Drawing.Size(242, 46);
+            buttonCopy.TabIndex = 2;
+            buttonCopy.Text = "Copy";
+            buttonCopy.UseVisualStyleBackColor = true;
             // 
             // textBoxFreq
             // 
@@ -41,20 +61,11 @@
             textBoxFreq.Size = new System.Drawing.Size(498, 580);
             textBoxFreq.TabIndex = 0;
             // 
-            // buttonUpdate
-            // 
-            buttonUpdate.Location = new System.Drawing.Point(20, 17);
-            buttonUpdate.Name = "buttonUpdate";
-            buttonUpdate.Size = new System.Drawing.Size(150, 46);
-            buttonUpdate.TabIndex = 1;
-            buttonUpdate.Text = "Update";
-            buttonUpdate.UseVisualStyleBackColor = true;
-            buttonUpdate.Click += buttonUpdate_Click;
-            // 
             // ControlPanel
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(buttonCopy);
             Controls.Add(buttonUpdate);
             Controls.Add(textBoxFreq);
             Margin = new System.Windows.Forms.Padding(6);
@@ -65,8 +76,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox textBoxFreq;
         private System.Windows.Forms.Button buttonUpdate;
+        private System.Windows.Forms.Button buttonCopy;
+        private System.Windows.Forms.TextBox textBoxFreq;
     }
 }

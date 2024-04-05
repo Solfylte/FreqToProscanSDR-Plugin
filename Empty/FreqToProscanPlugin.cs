@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using SDRSharp.Common;
+using SDRSharp.FreqToProscan.Services;
 
 namespace SDRSharp.FreqToProscan
 {
@@ -12,7 +13,8 @@ namespace SDRSharp.FreqToProscan
         public string Category => "Proscan";        
         public string MenuItemName => DisplayName;
 
-        public IFreqToProscanService _freqToProscanService;
+        private IFreqXmlDataService _freqXmlDataService;
+        private IFreqToProscanService _freqToProscanService;
 
         public UserControl Gui
         {
@@ -27,7 +29,8 @@ namespace SDRSharp.FreqToProscan
 
         public FreqToProscanPlugin()
         {
-            _freqToProscanService = new FreqToProscanService();
+            _freqXmlDataService = new FreqXmlDataService();
+            _freqToProscanService = new FreqToProscanService(_freqXmlDataService);
         }
 
         private bool IsGUINotExist() => _gui == null;
