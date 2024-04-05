@@ -1,9 +1,8 @@
 {
   "profiles": {
-    "SDRSharp.Diagnostics": {
+    "Debug": {
       "commandName": "Executable",
-      "executablePath": "D:\\RD\\Projects\\TestApp\\SDRPluginTemplate\\sdrplugins\\bin\\SDRSharp.exe",
-      "workingDirectory": "..\\$(Configuration)\\$(TargetFramework)\\"
+      "executablePath": "D:\\RD\\Projects\\FreqManagerToProscanSDR#Plugin\\bin\\SDRSharp.exe"
     }
   }
 }
