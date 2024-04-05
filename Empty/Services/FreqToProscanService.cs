@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SDRSharp.FreqToProscan.Data;
+using SDRSharp.FreqToProscan.Services;
 
 namespace SDRSharp.FreqToProscan
 {
@@ -9,24 +10,43 @@ namespace SDRSharp.FreqToProscan
 
         private IPluginData _pluginFreqData;
 
-        public FreqToProscanService()
+        private IFreqXmlDataService _freqXmlFileService;
+        private List<IFrequencyData> _freqenciesData;
+
+        public FreqToProscanService(IFreqXmlDataService freqXmlFileService)
         {
+            _freqXmlFileService = freqXmlFileService;
             UpdateData();
         }
 
         public void UpdateData()
         {
+            _freqenciesData = _freqXmlFileService.GetData();
             _pluginFreqData = new PluginData(GetProscanLines(), GetFrequencies());
         }
 
         private List<string> GetProscanLines()
         {
-            return new List<string>();
+            List<string> proscanLines = new List<string>();
+
+            foreach (IFrequencyData frequencyData in _freqenciesData)
+            {
+                proscanLines.Add(frequencyData.Name);
+            }
+
+            return proscanLines;
         }
 
-        private List<float> GetFrequencies()
+        private List<int> GetFrequencies()
         {
-            return new List<float>();
+            List<int> freqValueLines = new List<int>();
+
+            foreach (IFrequencyData frequencyData in _freqenciesData)
+            {
+                freqValueLines.Add(frequencyData.Frequency);
+            }
+
+            return freqValueLines;
         }
     }
 

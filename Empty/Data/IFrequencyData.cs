@@ -1,6 +1,6 @@
 ﻿namespace SDRSharp.FreqToProscan
 {
-    public interface IFrequenciesManagerData
+    public interface IFrequencyData
     {
         bool IsFavourite { get; }
         string Name { get; }

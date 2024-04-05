@@ -1,6 +1,6 @@
 ﻿namespace SDRSharp.FreqToProscan.Data
 {
-    public struct FrequenciesManagerData : IFrequenciesManagerData
+    public struct FrequencyData : IFrequencyData
     {
         private bool _isFavourite;
         private string _name;
@@ -18,7 +18,7 @@
         public int Shift => _shift;
         public int FilterBandwidth => _filterBandwidth;
 
-        public FrequenciesManagerData(bool isFavourite, string name,
+        public FrequencyData(bool isFavourite, string name,
                                     string groupName, int frequency,
                                     string detectorType, int shift,
                                     int filterBandwidth)

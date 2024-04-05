@@ -5,24 +5,27 @@ using System.Xml;
 
 namespace SDRSharp.FreqToProscan.Services
 {
-    public class FreqXmlDataService : IFreqXmlFileService
+    public class FreqXmlDataService : IFreqXmlDataService
     {
-        private List<IFrequenciesManagerData> _frequenciesManagerData;
+        private const string PATH = "..\\Frequencies.xml";
+        private const string MEMORY_NODE_NAME = "descendant::MemoryEntry";
+
+        private List<IFrequencyData> _frequenciesManagerData;
         private XmlNodeList _frequenciesNodeList;
 
         public FreqXmlDataService()
         {
-            _frequenciesManagerData = new List<IFrequenciesManagerData>();
+            _frequenciesManagerData = new List<IFrequencyData>();
         }
 
-        public List<IFrequenciesManagerData> GetData()
+        public List<IFrequencyData> GetData()
         {
             _frequenciesManagerData.Clear();
             _frequenciesNodeList = GetFrequenciesNodeList();
 
             foreach (XmlNode node in _frequenciesNodeList)
             {
-                IFrequenciesManagerData data = new FrequenciesManagerData
+                IFrequencyData data = new FrequencyData
                     (isFavourite: Convert.ToBoolean(node.SelectSingleNode("IsFavourite").InnerText),
                     name: node.SelectSingleNode("Name").InnerText,
                     groupName: node.SelectSingleNode("GroupName").InnerText,
@@ -40,14 +43,9 @@ namespace SDRSharp.FreqToProscan.Services
         private XmlNodeList GetFrequenciesNodeList()
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load("..\\..\\Debug\\net7.0-windows\\Frequencies.xml");
+            doc.Load(PATH);
             XmlNode root = doc.DocumentElement;
-            return root.SelectNodes("descendant::MemoryEntry");
+            return root.SelectNodes($"descendant::{MEMORY_NODE_NAME}");
         }
-    }
-
-    public interface IFreqXmlFileService
-    {
-        public List<IFrequenciesManagerData> GetData();
     }
 }
