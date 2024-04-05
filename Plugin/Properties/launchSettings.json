@@ -2,7 +2,7 @@
   "profiles": {
     "SDRSharp.Diagnostics": {
       "commandName": "Executable",
-      "executablePath": "..\\..\\bin\\SDRSharp.exe",
+      "executablePath": "D:\\RD\\Projects\\TestApp\\SDRPluginTemplate\\sdrplugins\\bin\\SDRSharp.exe",
       "workingDirectory": "..\\$(Configuration)\\$(TargetFramework)\\"
     }
   }
