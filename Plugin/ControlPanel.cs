@@ -8,7 +8,7 @@ namespace SDRSharp.FreqToProscan
     {
         public Action OnDataUpdateNeed;
 
-        private FreqGridWindow _freqGridWindow;
+        private FreqTableWindow _freqGridWindow;
 
         private IPluginData _pluginData;
 
@@ -59,7 +59,7 @@ namespace SDRSharp.FreqToProscan
             ShowTableWindow();            
         }
 
-        private void CreateNewTableWindow() => _freqGridWindow = new FreqGridWindow(_pluginData);
+        private void CreateNewTableWindow() => _freqGridWindow = new FreqTableWindow(_pluginData);
 
         private void FocusOnExistTableWindow() => _freqGridWindow.Focus();
 

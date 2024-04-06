@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace SDRSharp.FreqToProscan
 {
-    public partial class FreqGridWindow : Form
+    public partial class FreqTableWindow : Form
     {
         private const string ALL_GROUP = "All";
 
@@ -14,19 +14,14 @@ namespace SDRSharp.FreqToProscan
 
         private Unit _selectedUnit = Unit.MHz;
 
-        private DataTable _table = new DataTable();
+        private FreqTable _freqTable;
 
-        public FreqGridWindow(IPluginData pluginData)
+        public FreqTableWindow(IPluginData pluginData)
         {
             InitializeComponent();
             InitializeComboBox();
 
-            _table.Columns.Add("Frequency");
-            _table.Columns.Add("Unit");
-            _table.Columns.Add("Name");
-            _table.Columns.Add("Group");
-            _table.Columns.Add("Mod");
-            _table.Columns.Add("Bandwidth");
+            _freqTable = new FreqTable();
 
             Update(pluginData);
         }
@@ -50,45 +45,11 @@ namespace SDRSharp.FreqToProscan
 
         private void UpdateTable()
         {
-            List<IFrequencyData> frequencyData = _pluginData.Frequencies;
-
-            _table.Rows.Clear();
-
-            bool isShowAll = comboBoxGroup.Text == ALL_GROUP;
-
-            for (int i = 0; i < frequencyData.Count; i++)
-            {
-                IFrequencyData data = frequencyData[i];
-                if (isShowAll || data.GroupName == comboBoxGroup.Text)
-                {
-                    _table.Rows.Add(GetFrequencyText(data.Frequency),
-                                    comboBoxUnits.SelectedItem,
-                                    data.Name,
-                                    data.GroupName,
-                                    data.DetectorType,
-                                    data.FilterBandwidth);
-                }
-            }
+            _freqTable.UpdateTable(_pluginData, comboBoxGroup.Text, _selectedUnit);
 
             dataGridViewFreq.DataSource = null;
-            dataGridViewFreq.DataSource = _table;
+            dataGridViewFreq.DataSource = _freqTable.Table;
             dataGridViewFreq.Refresh();
-        }
-
-        private string GetFrequencyText(float frequency)
-        {
-            return (frequency / (int)(_selectedUnit)).ToString(GetFrequencyFormat(frequency));
-        }
-
-        private string GetFrequencyFormat(float frequency)
-        {
-            string format = $"";
-            if (_selectedUnit > Unit.kHz)
-                format += "0.000";
-            else if (frequency / (int)(_selectedUnit) >= 1)
-                format = $"0";
-
-            return format;
         }
 
         private void UpdateGroupControl()
@@ -105,14 +66,16 @@ namespace SDRSharp.FreqToProscan
         {
             _selectedUnit = (Unit)comboBoxUnits.SelectedItem;
 
-            if (_pluginData != null)
+            if (IsPluginDataExist())
                 UpdateTable();
         }
 
         private void comboBoxGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_pluginData != null)
+            if (IsPluginDataExist())
                 UpdateTable();
         }
+
+        private bool IsPluginDataExist() => _pluginData != null;
     }
 }

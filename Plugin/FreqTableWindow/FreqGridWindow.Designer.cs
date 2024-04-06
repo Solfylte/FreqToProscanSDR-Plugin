@@ -1,6 +1,6 @@
 ﻿namespace SDRSharp.FreqToProscan
 {
-    partial class FreqGridWindow
+    partial class FreqTableWindow
     {
         /// <summary>
         /// Required designer variable.
