@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using SDRSharp.FreqToProscan.Data;
+using System.Collections.Generic;
 
 namespace SDRSharp.FreqToProscan
 {
     public interface IPluginData
     {
         List<string> ProscanLines { get; }
-        List<int> Frequencies { get; }
+        List<IFrequencyData> Frequencies { get; }
+        List<IGridWindowData> GridWindowDatas { get; }
     }
 }

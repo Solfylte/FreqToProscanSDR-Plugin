@@ -1,5 +1,6 @@
 ﻿namespace SDRSharp.FreqToProscan.Data
 {
+    // Data from default SDR# Frequency Manager XML file
     public struct FrequencyData : IFrequencyData
     {
         private bool _isFavourite;

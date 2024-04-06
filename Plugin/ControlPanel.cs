@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SDRSharp.FreqToProscan.Data;
+using System;
 using System.Text;
 using System.Windows.Forms;
 
@@ -8,6 +9,10 @@ namespace SDRSharp.FreqToProscan
     {
         public Action OnDataUpdateNeed;
 
+        private FreqGridWindow _freqGridWindow;
+
+        private IPluginData _pluginData;
+
         public ControlPanel()
         {
             InitializeComponent();
@@ -16,23 +21,40 @@ namespace SDRSharp.FreqToProscan
 
         public void UpdateGUIData(IPluginData pluginData)
         {
+            _pluginData = pluginData;
+            ClearUI();
+
             StringBuilder proscanLines = new StringBuilder();
-            if (pluginData.ProscanLines.Count > 0)
+            if (_pluginData.ProscanLines.Count > 0)
             {
-                foreach (string line in pluginData.ProscanLines)
+                foreach (string line in _pluginData.ProscanLines)
                     proscanLines.AppendLine(line);
 
                 textBoxFreq.Text = proscanLines.ToString();
             }
-            else
-            {
-                textBoxFreq.Clear();
-            }
+
+            if (_freqGridWindow != null)
+                _freqGridWindow.Update(_pluginData);
+        }
+
+        private void ClearUI()
+        {
+            textBoxFreq.Clear();
         }
 
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
             OnDataUpdateNeed?.Invoke();
+        }
+
+        private void buttonShowFreqTable_Click(object sender, EventArgs e)
+        {
+            if (_freqGridWindow == null)
+                _freqGridWindow = new FreqGridWindow(_pluginData);
+            else
+                _freqGridWindow.Focus();
+
+            _freqGridWindow.Show();
         }
     }
 }

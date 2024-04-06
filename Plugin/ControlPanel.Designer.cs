@@ -31,6 +31,7 @@
             buttonUpdate = new System.Windows.Forms.Button();
             buttonCopy = new System.Windows.Forms.Button();
             textBoxFreq = new System.Windows.Forms.TextBox();
+            buttonShowFreqTable = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
             // buttonUpdate
@@ -55,16 +56,27 @@
             // textBoxFreq
             // 
             textBoxFreq.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            textBoxFreq.Location = new System.Drawing.Point(20, 217);
+            textBoxFreq.Location = new System.Drawing.Point(20, 64);
             textBoxFreq.Multiline = true;
             textBoxFreq.Name = "textBoxFreq";
-            textBoxFreq.Size = new System.Drawing.Size(498, 580);
+            textBoxFreq.Size = new System.Drawing.Size(498, 279);
             textBoxFreq.TabIndex = 0;
+            // 
+            // buttonShowFreqTable
+            // 
+            buttonShowFreqTable.Location = new System.Drawing.Point(20, 362);
+            buttonShowFreqTable.Name = "buttonShowFreqTable";
+            buttonShowFreqTable.Size = new System.Drawing.Size(150, 46);
+            buttonShowFreqTable.TabIndex = 3;
+            buttonShowFreqTable.Text = "Show table";
+            buttonShowFreqTable.UseVisualStyleBackColor = true;
+            buttonShowFreqTable.Click += buttonShowFreqTable_Click;
             // 
             // ControlPanel
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(buttonShowFreqTable);
             Controls.Add(buttonCopy);
             Controls.Add(buttonUpdate);
             Controls.Add(textBoxFreq);
@@ -79,5 +91,6 @@
         private System.Windows.Forms.Button buttonUpdate;
         private System.Windows.Forms.Button buttonCopy;
         private System.Windows.Forms.TextBox textBoxFreq;
+        private System.Windows.Forms.Button buttonShowFreqTable;
     }
 }

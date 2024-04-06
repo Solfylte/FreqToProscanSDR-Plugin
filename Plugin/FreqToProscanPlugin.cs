@@ -14,7 +14,7 @@ namespace SDRSharp.FreqToProscan
         public string MenuItemName => DisplayName;
 
         private IFreqXmlDataService _freqXmlDataService;
-        private IFreqToProscanService _freqToProscanService;
+        private IPluginDataService _freqToProscanService;
 
         public UserControl Gui
         {
@@ -30,7 +30,7 @@ namespace SDRSharp.FreqToProscan
         public FreqToProscanPlugin()
         {
             _freqXmlDataService = new FreqXmlDataService();
-            _freqToProscanService = new FreqToProscanService(_freqXmlDataService);
+            _freqToProscanService = new PluginDataService(_freqXmlDataService);
         }
 
         private bool IsGUINotExist() => _gui == null;
@@ -39,6 +39,7 @@ namespace SDRSharp.FreqToProscan
         {
             _gui = new ControlPanel();
             SubscribeGUIEvents();
+            UpdateData();
         }
 
         public void Initialize(ISharpControl control) { }
@@ -64,8 +65,8 @@ namespace SDRSharp.FreqToProscan
 
         private void UpdateData()
         {
-            _freqToProscanService.UpdateData();
-            _gui.UpdateGUIData(_freqToProscanService.GetData);
+            IPluginData pluginData = _freqToProscanService.GetData();
+            _gui.UpdateGUIData(pluginData);
         }
     }
 }
