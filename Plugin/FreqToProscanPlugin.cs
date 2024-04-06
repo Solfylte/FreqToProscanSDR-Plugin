@@ -66,7 +66,7 @@ namespace SDRSharp.FreqToProscan
         private void UpdateData()
         {
             IPluginData pluginData = _freqToProscanService.GetData();
-            _gui.UpdateGUIData(pluginData);
+            _gui.UpdateGUI(pluginData);
         }
     }
 }

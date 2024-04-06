@@ -1,5 +1,4 @@
-﻿using SDRSharp.FreqToProscan.Data;
-using System;
+﻿using System;
 using System.Text;
 using System.Windows.Forms;
 
@@ -19,11 +18,23 @@ namespace SDRSharp.FreqToProscan
             OnDataUpdateNeed?.Invoke();
         }
 
-        public void UpdateGUIData(IPluginData pluginData)
+        public void UpdateGUI(IPluginData pluginData)
         {
             _pluginData = pluginData;
-            ClearUI();
 
+            ClearTextGUI();
+            FillTextGUI();
+
+            if (IsFreqTableWindowExist())
+                UpdateFreqTableWindow();                
+        }
+
+        private void UpdateFreqTableWindow() => _freqGridWindow.Update(_pluginData);
+
+        private void ClearTextGUI() => textBoxFreq.Clear();
+
+        private void FillTextGUI()
+        {
             StringBuilder proscanLines = new StringBuilder();
             if (_pluginData.ProscanLines.Count > 0)
             {
@@ -32,29 +43,26 @@ namespace SDRSharp.FreqToProscan
 
                 textBoxFreq.Text = proscanLines.ToString();
             }
-
-            if (_freqGridWindow != null)
-                _freqGridWindow.Update(_pluginData);
         }
 
-        private void ClearUI()
-        {
-            textBoxFreq.Clear();
-        }
+        private bool IsFreqTableWindowExist() => _freqGridWindow != null && !_freqGridWindow.IsDisposed;
 
-        private void buttonUpdate_Click(object sender, EventArgs e)
-        {
-            OnDataUpdateNeed?.Invoke();
-        }
+        private void buttonUpdate_Click(object sender, EventArgs e) => OnDataUpdateNeed?.Invoke();
 
         private void buttonShowFreqTable_Click(object sender, EventArgs e)
         {
-            if (_freqGridWindow == null)
-                _freqGridWindow = new FreqGridWindow(_pluginData);
+            if (IsFreqTableWindowExist())
+                FocusOnExistTableWindow();
             else
-                _freqGridWindow.Focus();
+                CreateNewTableWindow();
 
-            _freqGridWindow.Show();
+            ShowTableWindow();            
         }
+
+        private void CreateNewTableWindow() => _freqGridWindow = new FreqGridWindow(_pluginData);
+
+        private void FocusOnExistTableWindow() => _freqGridWindow.Focus();
+
+        private void ShowTableWindow() => _freqGridWindow.Show();
     }
 }

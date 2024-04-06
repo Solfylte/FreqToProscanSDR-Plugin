@@ -7,6 +7,5 @@ namespace SDRSharp.FreqToProscan
     {
         List<string> ProscanLines { get; }
         List<IFrequencyData> Frequencies { get; }
-        List<IGridWindowData> GridWindowDatas { get; }
     }
 }
