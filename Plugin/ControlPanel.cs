@@ -26,7 +26,7 @@ namespace SDRSharp.FreqToProscan
             FillTextGUI();
 
             if (IsFreqTableWindowExist())
-                UpdateFreqTableWindow();                
+                UpdateFreqTableWindow();
         }
 
         private void UpdateFreqTableWindow() => _freqGridWindow.Update(_pluginData);
@@ -56,7 +56,7 @@ namespace SDRSharp.FreqToProscan
             else
                 CreateNewTableWindow();
 
-            ShowTableWindow();            
+            ShowTableWindow();
         }
 
         private void CreateNewTableWindow() => _freqGridWindow = new FreqTableWindow(_pluginData);

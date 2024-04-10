@@ -1,11 +1,6 @@
 ﻿using SDRSharp.FreqToProscan.Data;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SDRSharp.FreqToProscan
 {
@@ -15,6 +10,11 @@ namespace SDRSharp.FreqToProscan
         public DataTable Table { get; private set; }
 
         public FreqTable() 
+        {
+            CreateTable();
+        }
+
+        private void CreateTable()
         {
             Table = new DataTable();
             Table.Columns.Add("Frequency");
@@ -28,14 +28,12 @@ namespace SDRSharp.FreqToProscan
         public void UpdateTable(IPluginData pluginData, string groupFilter, Unit unit)
         {
             List<IFrequencyData> frequencyData = pluginData.Frequencies;
-
             Table.Rows.Clear();
 
             bool isShowAll = groupFilter == ALL_GROUP;
 
-            for (int i = 0; i < frequencyData.Count; i++)
+            foreach (IFrequencyData data in frequencyData)
             {
-                IFrequencyData data = frequencyData[i];
                 if (isShowAll || data.GroupName == groupFilter)
                 {
                     Table.Rows.Add(GetFrequencyText(data.Frequency, unit),
