@@ -60,15 +60,17 @@
             // 
             // textBoxFreq
             // 
-            textBoxFreq.Location = new System.Drawing.Point(5, 5);
+            textBoxFreq.Dock = System.Windows.Forms.DockStyle.Fill;
+            textBoxFreq.Location = new System.Drawing.Point(5, 75);
             textBoxFreq.Margin = new System.Windows.Forms.Padding(10);
             textBoxFreq.Multiline = true;
             textBoxFreq.Name = "textBoxFreq";
-            textBoxFreq.Size = new System.Drawing.Size(468, 624);
+            textBoxFreq.Size = new System.Drawing.Size(468, 553);
             textBoxFreq.TabIndex = 0;
             // 
             // splitContainer2
             // 
+            splitContainer2.Dock = System.Windows.Forms.DockStyle.Top;
             splitContainer2.Location = new System.Drawing.Point(5, 60);
             splitContainer2.Name = "splitContainer2";
             // 
@@ -88,6 +90,7 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.Dock = System.Windows.Forms.DockStyle.Fill;
             label1.Location = new System.Drawing.Point(5, 10);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(80, 32);
@@ -96,8 +99,9 @@
             // 
             // comboBoxGroup
             // 
+            comboBoxGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             comboBoxGroup.FormattingEnabled = true;
-            comboBoxGroup.Location = new System.Drawing.Point(10, 12);
+            comboBoxGroup.Location = new System.Drawing.Point(10, 10);
             comboBoxGroup.Name = "comboBoxGroup";
             comboBoxGroup.Size = new System.Drawing.Size(344, 40);
             comboBoxGroup.TabIndex = 9;
@@ -105,10 +109,11 @@
             // 
             // buttonShowFreqTable
             // 
+            buttonShowFreqTable.Dock = System.Windows.Forms.DockStyle.Fill;
             buttonShowFreqTable.Location = new System.Drawing.Point(5, 5);
             buttonShowFreqTable.Name = "buttonShowFreqTable";
             buttonShowFreqTable.Padding = new System.Windows.Forms.Padding(5);
-            buttonShowFreqTable.Size = new System.Drawing.Size(468, 59);
+            buttonShowFreqTable.Size = new System.Drawing.Size(468, 60);
             buttonShowFreqTable.TabIndex = 3;
             buttonShowFreqTable.Text = "Show table";
             buttonShowFreqTable.UseVisualStyleBackColor = true;
@@ -116,6 +121,7 @@
             // 
             // splitContainer1
             // 
+            splitContainer1.Dock = System.Windows.Forms.DockStyle.Top;
             splitContainer1.Location = new System.Drawing.Point(5, 5);
             splitContainer1.Margin = new System.Windows.Forms.Padding(10);
             splitContainer1.Name = "splitContainer1";
@@ -138,6 +144,7 @@
             // buttonUpdate
             // 
             buttonUpdate.AutoSize = true;
+            buttonUpdate.Dock = System.Windows.Forms.DockStyle.Fill;
             buttonUpdate.Location = new System.Drawing.Point(5, 5);
             buttonUpdate.Margin = new System.Windows.Forms.Padding(5);
             buttonUpdate.Name = "buttonUpdate";
@@ -150,6 +157,7 @@
             // buttonCopy
             // 
             buttonCopy.AutoSize = true;
+            buttonCopy.Dock = System.Windows.Forms.DockStyle.Fill;
             buttonCopy.Location = new System.Drawing.Point(5, 5);
             buttonCopy.Margin = new System.Windows.Forms.Padding(5);
             buttonCopy.Name = "buttonCopy";
@@ -161,26 +169,28 @@
             // 
             // splitContainer3
             // 
-            splitContainer3.Location = new System.Drawing.Point(5, 223);
+            splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer3.Location = new System.Drawing.Point(5, 124);
             splitContainer3.Name = "splitContainer3";
             splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer3.Panel1
             // 
             splitContainer3.Panel1.Controls.Add(textBoxFreq);
-            splitContainer3.Panel1.Padding = new System.Windows.Forms.Padding(5);
+            splitContainer3.Panel1.Padding = new System.Windows.Forms.Padding(5, 75, 5, 5);
             // 
             // splitContainer3.Panel2
             // 
             splitContainer3.Panel2.Controls.Add(buttonShowFreqTable);
             splitContainer3.Panel2.Padding = new System.Windows.Forms.Padding(5);
-            splitContainer3.Size = new System.Drawing.Size(478, 608);
-            splitContainer3.SplitterDistance = 545;
+            splitContainer3.Size = new System.Drawing.Size(478, 707);
+            splitContainer3.SplitterDistance = 633;
             splitContainer3.TabIndex = 10;
             // 
             // splitContainer4
             // 
-            splitContainer4.Location = new System.Drawing.Point(5, 130);
+            splitContainer4.Dock = System.Windows.Forms.DockStyle.Top;
+            splitContainer4.Location = new System.Drawing.Point(5, 124);
             splitContainer4.Name = "splitContainer4";
             // 
             // splitContainer4.Panel1
@@ -199,7 +209,8 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(10, 20);
+            label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            label2.Location = new System.Drawing.Point(5, 10);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(90, 32);
             label2.TabIndex = 7;
@@ -207,6 +218,7 @@
             // 
             // comboBoxScanerType
             // 
+            comboBoxScanerType.Dock = System.Windows.Forms.DockStyle.Fill;
             comboBoxScanerType.FormattingEnabled = true;
             comboBoxScanerType.Location = new System.Drawing.Point(10, 10);
             comboBoxScanerType.Name = "comboBoxScanerType";
