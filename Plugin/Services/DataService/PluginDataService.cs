@@ -13,6 +13,7 @@ namespace SDRSharp.FreqToProscan
         private List<IFrequencyData> _freqenciesData;
         private List<IProscanDatabaseLineData> _proscanDatabaseLineDatas;
         private ScanerType _scanerType;
+        private string _groupFilter;
 
         public PluginDataService(IFreqXmlDataService freqXmlFileService,
                                     IProscanDatabaseLinesDataService proScanChannelDataService)
@@ -24,9 +25,10 @@ namespace SDRSharp.FreqToProscan
             _freqenciesData = new List<IFrequencyData>();
         }
 
-        public IPluginData GetData(ScanerType scanerType)
+        public IPluginData GetData(ScanerType scanerType, string groupFilter)
         {
             _scanerType = scanerType;
+            _groupFilter = groupFilter;
 
             UpdateData();
 
@@ -42,14 +44,12 @@ namespace SDRSharp.FreqToProscan
                                             _freqenciesData);
         }
 
-        private void UpdateFrequenciesData()
-        {
+        private void UpdateFrequenciesData() => 
             _freqenciesData = new List<IFrequencyData>(_freqXmlFileService.GetData());
-        }
 
         private void UpdateProScanChannelsData()
         {
-            _proscanDatabaseLineDatas = new List<IProscanDatabaseLineData>(_proscanDatabaseLinesDataService.GetData(_scanerType, _freqenciesData));
+            _proscanDatabaseLineDatas = new List<IProscanDatabaseLineData>(_proscanDatabaseLinesDataService.GetData(_freqenciesData, _scanerType, _groupFilter));
         }
     }
 }

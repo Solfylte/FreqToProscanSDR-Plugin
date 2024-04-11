@@ -5,7 +5,8 @@ namespace SDRSharp.FreqToProscan
 
     public interface IProscanDatabaseLinesDataService
     {
-        List<IProscanDatabaseLineData> GetData(ScanerType _scanerType,
-                                               List<IFrequencyData> _freqenciesData);
+        List<IProscanDatabaseLineData> GetData(List<IFrequencyData> freqenciesData,
+                                                ScanerType scanerType,
+                                                string groupFilter);
     }
 }

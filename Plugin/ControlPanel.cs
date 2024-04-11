@@ -9,7 +9,7 @@ namespace SDRSharp.FreqToProscan
     {
         private const string ALL_GROUP = "All";
 
-        public Action<ScanerType> OnDataUpdateNeed;
+        public Action<ScanerType, string> OnDataUpdateNeed;
 
         private FreqTableWindow _freqGridWindow;
 
@@ -21,7 +21,7 @@ namespace SDRSharp.FreqToProscan
         {
             InitializeComponent();
             InitializeComboBox();
-            OnDataUpdateNeed?.Invoke(_selectedScanerType);
+            OnDataUpdateNeed?.Invoke(_selectedScanerType, ALL_GROUP);
         }
 
         private void InitializeComboBox()
@@ -67,11 +67,8 @@ namespace SDRSharp.FreqToProscan
 
         private string GetProScanChannelsAsText()
         {
-            bool isShowAll = comboBoxGroup.Text == ALL_GROUP;
-
             StringBuilder proscanCnannelsText = new StringBuilder();
             foreach (var proscanDatabaseLine in _pluginData.ProscanDatabaseLines)
-                if (isShowAll || proscanDatabaseLine.Group == comboBoxGroup.Text)
                     proscanCnannelsText.AppendLine(proscanDatabaseLine.Text);
 
             return proscanCnannelsText.ToString();
@@ -98,20 +95,22 @@ namespace SDRSharp.FreqToProscan
         private void buttonCopy_Click(object sender, EventArgs e) => Clipboard.SetText(textBoxFreq.Text);
 
         private void buttonUpdate_Click(object sender, EventArgs e)
-                                        => OnDataUpdateNeed?.Invoke(_selectedScanerType);
+                                        => OnDataUpdateNeed?.Invoke(_selectedScanerType,
+                                                                    comboBoxGroup.Text);
 
         private void ControlPanel_Enter(object sender, EventArgs e)
-                                        => OnDataUpdateNeed?.Invoke(_selectedScanerType);
+                                        => OnDataUpdateNeed?.Invoke(_selectedScanerType,
+                                                                    comboBoxGroup.Text);
 
         private void comboBoxScanerType_SelectedIndexChanged(object sender, EventArgs e)
         {
             _selectedScanerType = (ScanerType)comboBoxScanerType.SelectedItem;
-            OnDataUpdateNeed?.Invoke(_selectedScanerType);
+            OnDataUpdateNeed?.Invoke(_selectedScanerType, comboBoxGroup.Text);
         }
 
         private void comboBoxGroup_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            OnDataUpdateNeed?.Invoke(_selectedScanerType);
+            OnDataUpdateNeed?.Invoke(_selectedScanerType, comboBoxGroup.Text);
         }
     }
 }

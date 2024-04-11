@@ -6,6 +6,8 @@ namespace SDRSharp.FreqToProscan
 {
     public class FreqToProscanPlugin : ISharpPlugin, ICanLazyLoadGui, IExtendedNameProvider
     {
+        private const string ALL_GROUP = "All";
+
         private ControlPanel _gui;
 
         public string DisplayName => "Freq Manager To ProScan";        
@@ -52,7 +54,7 @@ namespace SDRSharp.FreqToProscan
         {
             _gui = new ControlPanel();
             SubscribeGUIEvents();
-            UpdateData(ScanerType.BCD996P2);
+            UpdateData();
         }
 
         private void SubscribeGUIEvents()
@@ -72,9 +74,11 @@ namespace SDRSharp.FreqToProscan
             UnsubscribeGUIEvents();
         }
 
-        private void UpdateData(ScanerType scanerType)
+        private void UpdateData() => UpdateData(ScanerType.BCD996P2, ALL_GROUP);
+
+        private void UpdateData(ScanerType scanerType, string groupFilter)
         {
-            IPluginData pluginData = _pluginDataService.GetData(scanerType);
+            IPluginData pluginData = _pluginDataService.GetData(scanerType, groupFilter);
             _gui.Update(pluginData);
         }
     }
