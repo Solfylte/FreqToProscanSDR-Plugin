@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace SDRSharp.FreqToProscan
@@ -61,7 +62,7 @@ namespace SDRSharp.FreqToProscan
             string name = frequencyData.Name.Replace(',', '.');
             string frequency = frequencyData.Frequency < 1000000000 ? "0" : "";
             frequency += (frequencyData.Frequency / 100).ToString();
-            string detectorType = frequencyData.DetectorType;
+            string detectorType = GetProscanDetectorType(frequencyData.DetectorType);
 
             proScanLine.Append(prefix);
             proScanLine.Append(separator);
@@ -76,6 +77,18 @@ namespace SDRSharp.FreqToProscan
             proScanLine.Append(sufix);
 
             return proScanLine.ToString();
+        }
+
+        private string GetProscanDetectorType(string detectorType)
+        {
+            string proscanDetectorType = ProscanDetectorType.AUTO.ToString();
+
+            if (detectorType == ProscanDetectorType.AM.ToString() ||
+                detectorType == ProscanDetectorType.NFM.ToString() ||
+                detectorType == ProscanDetectorType.WFM.ToString())
+                proscanDetectorType = detectorType;
+
+            return proscanDetectorType;          
         }
     }
 }
