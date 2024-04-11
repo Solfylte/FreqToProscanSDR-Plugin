@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SDRSharp.FreqToProscan.Services
+namespace SDRSharp.FreqToProscan
 {
     public interface IFreqXmlDataService
     {

@@ -1,29 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using SDRSharp.FreqToProscan.Data;
-using SDRSharp.FreqToProscan.Services;
 
 namespace SDRSharp.FreqToProscan
 {
     public class PluginDataService : IPluginDataService
     {
-        private IPluginData _pluginData;
-
         private IFreqXmlDataService _freqXmlFileService;
+        private IProScanChannelDataService _proScanChannelsDataService;
+
+        private IPluginData _pluginData;
         private List<IFrequencyData> _freqenciesData;
         private List<string> _proScanChannelsData;
+        private ScanerType _scanerType;
 
-        public PluginDataService(IFreqXmlDataService freqXmlFileService)
+        public PluginDataService(IFreqXmlDataService freqXmlFileService,
+                                    IProScanChannelDataService proScanChannelDataService)
         {
             _freqXmlFileService = freqXmlFileService;
+           _proScanChannelsDataService = proScanChannelDataService;
 
             _proScanChannelsData = new List<string>();
             _freqenciesData = new List<IFrequencyData>();
         }
 
-        public IPluginData GetData()
+        public IPluginData GetData(ScanerType scanerType)
         {
+            _scanerType = scanerType;
+
             UpdateData();
+
             return _pluginData;
         }
 
@@ -43,10 +49,7 @@ namespace SDRSharp.FreqToProscan
 
         private void UpdateProScanChannelsData()
         {
-            _proScanChannelsData.Clear();
-
-            foreach (IFrequencyData frequencyData in _freqenciesData)
-                _proScanChannelsData.Add(frequencyData.Name);
+            _proScanChannelsData = new List<string>(_proScanChannelsDataService.GetData(_scanerType, _freqenciesData));
         }
     }
 }

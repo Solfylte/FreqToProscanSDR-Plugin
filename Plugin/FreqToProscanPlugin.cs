@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using SDRSharp.Common;
-using SDRSharp.FreqToProscan.Services;
 
 namespace SDRSharp.FreqToProscan
 {
@@ -13,8 +12,10 @@ namespace SDRSharp.FreqToProscan
         public string Category => "Proscan";        
         public string MenuItemName => DisplayName;
 
+        private IPluginDataService _pluginDataService;
         private IFreqXmlDataService _freqXmlDataService;
-        private IPluginDataService _freqToProscanService;
+        private IScanerDataFabric _scanerDataFabric;
+        private IProScanChannelDataService _proScanChannelDataServece;
 
         public UserControl Gui
         {
@@ -29,22 +30,30 @@ namespace SDRSharp.FreqToProscan
 
         public FreqToProscanPlugin()
         {
+            CreateServices();
+        }
+
+        private void CreateServices()
+        {
             _freqXmlDataService = new FreqXmlDataService();
-            _freqToProscanService = new PluginDataService(_freqXmlDataService);
+            _scanerDataFabric = new ScanerDataFabric();
+            _proScanChannelDataServece = new ProScanChannelDataService(_scanerDataFabric);
+            _pluginDataService = new PluginDataService(_freqXmlDataService,
+                                                       _proScanChannelDataServece);
         }
 
         private bool IsGUINotExist() => _gui == null;
+
+        public void Initialize(ISharpControl control) { }
+
+        public void Close() { }
 
         public void LoadGui()
         {
             _gui = new ControlPanel();
             SubscribeGUIEvents();
-            UpdateData();
+            UpdateData(ScanerType.BCD996P2);
         }
-
-        public void Initialize(ISharpControl control) { }
-
-        public void Close() { }
 
         private void SubscribeGUIEvents()
         {
@@ -63,10 +72,10 @@ namespace SDRSharp.FreqToProscan
             UnsubscribeGUIEvents();
         }
 
-        private void UpdateData()
+        private void UpdateData(ScanerType scanerType)
         {
-            IPluginData pluginData = _freqToProscanService.GetData();
-            _gui.UpdateGUI(pluginData);
+            IPluginData pluginData = _pluginDataService.GetData(scanerType);
+            _gui.Update(pluginData);
         }
     }
 }

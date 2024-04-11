@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
-namespace SDRSharp.FreqToProscan.Services
+namespace SDRSharp.FreqToProscan
 {
     public class FreqXmlDataService : IFreqXmlDataService
     {
@@ -23,7 +23,7 @@ namespace SDRSharp.FreqToProscan.Services
         {
             _frequenciesManagerData.Clear();
 
-            if(File.Exists(PATH))
+            if (File.Exists(PATH))
             {
                 _frequenciesNodeList = GetFrequenciesNodeList();
 

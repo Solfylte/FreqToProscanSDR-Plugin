@@ -1,5 +1,4 @@
-﻿using SDRSharp.FreqToProscan.Data;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 
 namespace SDRSharp.FreqToProscan
@@ -18,10 +17,10 @@ namespace SDRSharp.FreqToProscan
         {
             Table = new DataTable();
             Table.Columns.Add("Frequency");
-            Table.Columns.Add("Unit");
-            Table.Columns.Add("Name");
-            Table.Columns.Add("Group");
             Table.Columns.Add("Mod");
+            Table.Columns.Add("Name");
+            Table.Columns.Add("Unit");
+            Table.Columns.Add("Group");
             Table.Columns.Add("Bandwidth");
         }
 
@@ -37,10 +36,10 @@ namespace SDRSharp.FreqToProscan
                 if (isShowAll || data.GroupName == groupFilter)
                 {
                     Table.Rows.Add(GetFrequencyText(data.Frequency, unit),
-                                    unit,
-                                    data.Name,
-                                    data.GroupName,
                                     data.DetectorType,
+                                    data.Name,
+                                    unit,
+                                    data.GroupName,
                                     data.FilterBandwidth);
                 }
             }
@@ -49,16 +48,21 @@ namespace SDRSharp.FreqToProscan
         private string GetFrequencyText(float frequency, Unit unit)
         {
             string format = GetFrequencyFormat(frequency, unit);
-            return (frequency / (int)(unit)).ToString(format);
+            return (frequency / (int)(unit)).ToString(format).Replace(',','.');
         }
 
         public string GetFrequencyFormat(float frequencyHz, Unit unit)
         {
             string format = $"";
-            if (unit > Unit.kHz)
-                format += "0.000";
-            else if (frequencyHz / (int)(unit) >= 1)
-                format = $"0";
+
+            switch (unit)
+            {
+                case Unit.MHz:
+                    format += "0.000";
+                    break;
+                default:
+                    break;
+            }
 
             return format;
         }

@@ -1,4 +1,4 @@
-﻿namespace SDRSharp.FreqToProscan.Data
+﻿namespace SDRSharp.FreqToProscan
 {
     public enum Unit
     {

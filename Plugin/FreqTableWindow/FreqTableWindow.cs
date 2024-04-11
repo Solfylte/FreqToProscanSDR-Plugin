@@ -1,6 +1,6 @@
-﻿using SDRSharp.FreqToProscan.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SDRSharp.FreqToProscan
@@ -27,7 +27,7 @@ namespace SDRSharp.FreqToProscan
 
         private void InitializeComboBox()
         {
-            List<Unit> units = new List<Unit> { Unit.Hz, Unit.kHz, Unit.MHz, Unit.GHz };
+            List<Unit> units = Enum.GetValues<Unit>().ToList();
             comboBoxUnits.DataSource = units;
             comboBoxUnits.SelectedItem = Unit.MHz;
 
