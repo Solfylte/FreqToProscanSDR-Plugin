@@ -3,36 +3,37 @@ using System.Text;
 
 namespace SDRSharp.FreqToProscan
 {
-    public class ProScanChannelDataService : IProScanChannelDataService
+    public class ProscanDatabaseLinesDataService : IProscanDatabaseLinesDataService
     {
         private IScanerDataFabric _scanerDataFabric;
 
         private List<IScanerData> _scanerDatas;
         private List<IFrequencyData> _freqenciesData;
-        private List<string> _proScanChannelsData;
+        private List<IProscanDatabaseLineData> _proscanDatabaseLineData;
 
         private ScanerType _selectedScanerType;
 
-        public ProScanChannelDataService(IScanerDataFabric scanerDataFabric)
+        public ProscanDatabaseLinesDataService(IScanerDataFabric scanerDataFabric)
         {
             _scanerDataFabric = scanerDataFabric;
-            _proScanChannelsData = new List<string>();
+            _proscanDatabaseLineData = new List<IProscanDatabaseLineData>();
             _scanerDatas = _scanerDataFabric.CreateScanerDatas();
         }
 
-        public List<string> GetData(ScanerType scanerType, List<IFrequencyData> freqenciesData)
+        public List<IProscanDatabaseLineData> GetData(ScanerType scanerType,
+                                    List<IFrequencyData> freqenciesData)
         {
             _freqenciesData = freqenciesData;
             _selectedScanerType = scanerType;
 
             UpdateProScanChannelData();
 
-            return _proScanChannelsData;
+            return _proscanDatabaseLineData;
         }
 
         private void UpdateProScanChannelData()
         {
-            _proScanChannelsData.Clear();
+            _proscanDatabaseLineData.Clear();
 
             string sufix = "";
             foreach (var scanerData in _scanerDatas) 
@@ -45,7 +46,9 @@ namespace SDRSharp.FreqToProscan
             for (int i = 0; i < _freqenciesData.Count; i++)
             {
                 IFrequencyData frequencyData = _freqenciesData[i];
-                _proScanChannelsData.Add(GetProScanLine(i,frequencyData, sufix));
+                IProscanDatabaseLineData proscanDatabaseLineData = new ProscanDatabaseLineData(frequencyData.GroupName,
+                                                                        GetProScanLine(i, frequencyData, sufix));
+                _proscanDatabaseLineData.Add(proscanDatabaseLineData);
             }
         }
 

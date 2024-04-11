@@ -15,7 +15,7 @@ namespace SDRSharp.FreqToProscan
         private IPluginDataService _pluginDataService;
         private IFreqXmlDataService _freqXmlDataService;
         private IScanerDataFabric _scanerDataFabric;
-        private IProScanChannelDataService _proScanChannelDataServece;
+        private IProscanDatabaseLinesDataService _proscanDatabaseLinesDataServece;
 
         public UserControl Gui
         {
@@ -37,9 +37,9 @@ namespace SDRSharp.FreqToProscan
         {
             _freqXmlDataService = new FreqXmlDataService();
             _scanerDataFabric = new ScanerDataFabric();
-            _proScanChannelDataServece = new ProScanChannelDataService(_scanerDataFabric);
+            _proscanDatabaseLinesDataServece = new ProscanDatabaseLinesDataService(_scanerDataFabric);
             _pluginDataService = new PluginDataService(_freqXmlDataService,
-                                                       _proScanChannelDataServece);
+                                                       _proscanDatabaseLinesDataServece);
         }
 
         private bool IsGUINotExist() => _gui == null;

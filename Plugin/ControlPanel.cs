@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -49,12 +48,15 @@ namespace SDRSharp.FreqToProscan
 
         private void UpdateGroupControl()
         {
-            comboBoxGroup.Items.Clear();
-            comboBoxGroup.Items.Add(ALL_GROUP);
-
+            string selection = comboBoxGroup.Text;
             foreach (var data in _pluginData.Frequencies)
                 if (!comboBoxGroup.Items.Contains(data.GroupName))
                     comboBoxGroup.Items.Add(data.GroupName);
+
+            if (comboBoxGroup.Items.Contains(selection))
+                comboBoxGroup.Text = selection;
+            else
+                comboBoxGroup.Text = ALL_GROUP;
         }
 
         private void UpdateFreqTableWindow() => _freqGridWindow.Update(_pluginData);
@@ -65,9 +67,12 @@ namespace SDRSharp.FreqToProscan
 
         private string GetProScanChannelsAsText()
         {
+            bool isShowAll = comboBoxGroup.Text == ALL_GROUP;
+
             StringBuilder proscanCnannelsText = new StringBuilder();
-            foreach (string line in _pluginData.ProscanLines)
-                proscanCnannelsText.AppendLine(line);
+            foreach (var proscanDatabaseLine in _pluginData.ProscanDatabaseLines)
+                if (isShowAll || proscanDatabaseLine.Group == comboBoxGroup.Text)
+                    proscanCnannelsText.AppendLine(proscanDatabaseLine.Text);
 
             return proscanCnannelsText.ToString();
         }
@@ -104,7 +109,7 @@ namespace SDRSharp.FreqToProscan
             OnDataUpdateNeed?.Invoke(_selectedScanerType);
         }
 
-        private void comboBoxGroup_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxGroup_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             OnDataUpdateNeed?.Invoke(_selectedScanerType);
         }

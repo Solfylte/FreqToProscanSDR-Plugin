@@ -31,6 +31,7 @@
             textBoxFreq = new System.Windows.Forms.TextBox();
             splitContainer2 = new System.Windows.Forms.SplitContainer();
             label1 = new System.Windows.Forms.Label();
+            comboBoxGroup = new System.Windows.Forms.ComboBox();
             buttonShowFreqTable = new System.Windows.Forms.Button();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             buttonUpdate = new System.Windows.Forms.Button();
@@ -39,7 +40,6 @@
             splitContainer4 = new System.Windows.Forms.SplitContainer();
             label2 = new System.Windows.Forms.Label();
             comboBoxScanerType = new System.Windows.Forms.ComboBox();
-            comboBoxGroup = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
             splitContainer2.Panel1.SuspendLayout();
             splitContainer2.Panel2.SuspendLayout();
@@ -93,6 +93,15 @@
             label1.Size = new System.Drawing.Size(80, 32);
             label1.TabIndex = 7;
             label1.Text = "Group";
+            // 
+            // comboBoxGroup
+            // 
+            comboBoxGroup.FormattingEnabled = true;
+            comboBoxGroup.Location = new System.Drawing.Point(10, 12);
+            comboBoxGroup.Name = "comboBoxGroup";
+            comboBoxGroup.Size = new System.Drawing.Size(344, 40);
+            comboBoxGroup.TabIndex = 9;
+            comboBoxGroup.SelectedIndexChanged += comboBoxGroup_SelectedIndexChanged_1;
             // 
             // buttonShowFreqTable
             // 
@@ -204,14 +213,6 @@
             comboBoxScanerType.Size = new System.Drawing.Size(344, 40);
             comboBoxScanerType.TabIndex = 8;
             comboBoxScanerType.SelectedIndexChanged += comboBoxScanerType_SelectedIndexChanged;
-            // 
-            // comboBoxGroup
-            // 
-            comboBoxGroup.FormattingEnabled = true;
-            comboBoxGroup.Location = new System.Drawing.Point(10, 12);
-            comboBoxGroup.Name = "comboBoxGroup";
-            comboBoxGroup.Size = new System.Drawing.Size(344, 40);
-            comboBoxGroup.TabIndex = 9;
             // 
             // ControlPanel
             // 
