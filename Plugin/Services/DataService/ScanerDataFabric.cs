@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SDRSharp.FreqToProscan
+namespace SDRSharp.FreqToProscan.Services
 {
     public class ScanerDataFabric : IScanerDataFabric
     {

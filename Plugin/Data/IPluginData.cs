@@ -4,7 +4,7 @@ namespace SDRSharp.FreqToProscan
 {
     public interface IPluginData
     {
-        List<IProscanDatabaseLineData> ProscanDatabaseLines { get; }
+        List<IProscanDbLineData> ProscanDbLines { get; }
         List<IFrequencyData> Frequencies { get; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using SDRSharp.Common;
+using SDRSharp.FreqToProscan.Services;
 
 namespace SDRSharp.FreqToProscan
 {
@@ -17,7 +18,7 @@ namespace SDRSharp.FreqToProscan
         private IPluginDataService _pluginDataService;
         private IFreqXmlDataService _freqXmlDataService;
         private IScanerDataFabric _scanerDataFabric;
-        private IProscanDatabaseLinesDataService _proscanDatabaseLinesDataServece;
+        private IProscanDbLinesDataService _proscanDbLinesDataServece;
 
         public UserControl Gui
         {
@@ -39,9 +40,9 @@ namespace SDRSharp.FreqToProscan
         {
             _freqXmlDataService = new FreqXmlDataService();
             _scanerDataFabric = new ScanerDataFabric();
-            _proscanDatabaseLinesDataServece = new ProscanDatabaseLinesDataService(_scanerDataFabric);
+            _proscanDbLinesDataServece = new ProscanDbLinesDataService(_scanerDataFabric);
             _pluginDataService = new PluginDataService(_freqXmlDataService,
-                                                       _proscanDatabaseLinesDataServece);
+                                                       _proscanDbLinesDataServece);
         }
 
         private bool IsGUINotExist() => _gui == null;

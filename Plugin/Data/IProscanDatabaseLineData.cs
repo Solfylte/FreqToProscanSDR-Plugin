@@ -1,6 +1,6 @@
 ﻿namespace SDRSharp.FreqToProscan
 {
-    public interface IProscanDatabaseLineData
+    public interface IProscanDbLineData
     {
         string Group { get; }
         string Text { get; }

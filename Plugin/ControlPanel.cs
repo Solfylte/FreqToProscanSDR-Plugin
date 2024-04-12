@@ -48,15 +48,9 @@ namespace SDRSharp.FreqToProscan
 
         private void UpdateGroupControl()
         {
-            string selection = comboBoxGroup.Text;
             foreach (var data in _pluginData.Frequencies)
                 if (!comboBoxGroup.Items.Contains(data.GroupName))
                     comboBoxGroup.Items.Add(data.GroupName);
-
-            if (comboBoxGroup.Items.Contains(selection))
-                comboBoxGroup.Text = selection;
-            else
-                comboBoxGroup.Text = ALL_GROUP;
         }
 
         private void UpdateFreqTableWindow() => _freqGridWindow.Update(_pluginData);
@@ -68,8 +62,8 @@ namespace SDRSharp.FreqToProscan
         private string GetProScanChannelsAsText()
         {
             StringBuilder proscanCnannelsText = new StringBuilder();
-            foreach (var proscanDatabaseLine in _pluginData.ProscanDatabaseLines)
-                    proscanCnannelsText.AppendLine(proscanDatabaseLine.Text);
+            foreach (var proscanDbLine in _pluginData.ProscanDbLines)
+                    proscanCnannelsText.AppendLine(proscanDbLine.Text);
 
             return proscanCnannelsText.ToString();
         }
@@ -84,7 +78,8 @@ namespace SDRSharp.FreqToProscan
             ShowTableWindow();
         }
 
-        private bool IsFreqTableWindowExist() => _freqGridWindow != null && !_freqGridWindow.IsDisposed;
+        private bool IsFreqTableWindowExist() 
+                                        => _freqGridWindow != null && !_freqGridWindow.IsDisposed;
 
         private void CreateNewTableWindow() => _freqGridWindow = new FreqTableWindow(_pluginData);
 
@@ -92,7 +87,8 @@ namespace SDRSharp.FreqToProscan
 
         private void ShowTableWindow() => _freqGridWindow.Show(this);
 
-        private void buttonCopy_Click(object sender, EventArgs e) => Clipboard.SetText(textBoxFreq.Text);
+        private void buttonCopy_Click(object sender, EventArgs e) 
+                                        => Clipboard.SetText(textBoxFreq.Text);
 
         private void buttonUpdate_Click(object sender, EventArgs e)
                                         => OnDataUpdateNeed?.Invoke(_selectedScanerType,
@@ -108,9 +104,7 @@ namespace SDRSharp.FreqToProscan
             OnDataUpdateNeed?.Invoke(_selectedScanerType, comboBoxGroup.Text);
         }
 
-        private void comboBoxGroup_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            OnDataUpdateNeed?.Invoke(_selectedScanerType, comboBoxGroup.Text);
-        }
+        private void comboBoxGroup_SelectedIndexChanged_1(object sender, EventArgs e) 
+                        => OnDataUpdateNeed?.Invoke(_selectedScanerType, comboBoxGroup.Text);
     }
 }

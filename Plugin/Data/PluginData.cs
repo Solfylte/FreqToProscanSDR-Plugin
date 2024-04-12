@@ -4,16 +4,16 @@ namespace SDRSharp.FreqToProscan
 {
     public struct PluginData : IPluginData
     {
-        public List<IProscanDatabaseLineData> ProscanDatabaseLines => _proscanDatabaseLines;
+        public List<IProscanDbLineData> ProscanDbLines => _proscanDbLines;
         public List<IFrequencyData> Frequencies => _frequencies;
 
         private List<IFrequencyData> _frequencies;
-        private List<IProscanDatabaseLineData> _proscanDatabaseLines;
+        private List<IProscanDbLineData> _proscanDbLines;
         
-        public PluginData(List<IProscanDatabaseLineData> proscanDatabaseLines, 
+        public PluginData(List<IProscanDbLineData> proscanDbLines, 
                           List<IFrequencyData> frequencies)
         {
-            _proscanDatabaseLines = proscanDatabaseLines;
+            _proscanDbLines = proscanDbLines;
             _frequencies = frequencies;
         }
     }
