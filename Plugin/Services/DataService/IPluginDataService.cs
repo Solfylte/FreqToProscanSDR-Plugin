@@ -2,6 +2,6 @@
 {
     public interface IPluginDataService
     {
-        IPluginData GetData(ScanerType scanerType);
+        IPluginData GetData(ScanerType scanerType, string groupFilter);
     }
 }

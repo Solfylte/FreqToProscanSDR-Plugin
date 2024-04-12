@@ -1,93 +1,140 @@
-﻿using System.Collections.Generic;
+﻿using SDRSharp.FreqToProscan.Data;
+using System;
+using System.Collections.Generic;
 using System.Text;
 
-namespace SDRSharp.FreqToProscan
+namespace SDRSharp.FreqToProscan.Services
 {
-    public class ProscanDatabaseLinesDataService : IProscanDatabaseLinesDataService
+    public class ProscanDbLinesDataService : IProscanDbLinesDataService
     {
+        private const string ALL_GROUP = "All";
+
         private IScanerDataFabric _scanerDataFabric;
 
         private List<IScanerData> _scanerDatas;
-        private List<IFrequencyData> _freqenciesData;
-        private List<IProscanDatabaseLineData> _proscanDatabaseLineData;
+        private List<IFrequencyData> _freqencyDatas;
+        private List<IProscanDbLineData> _proscanDbLineDatas;
 
         private ScanerType _selectedScanerType;
+        private string _groupFilter;
 
-        public ProscanDatabaseLinesDataService(IScanerDataFabric scanerDataFabric)
+        private IFrequencyData _frequencyData;
+        private const string _prefix = "CIN,";
+        private const string _separator = ",";
+        private string _name;
+        private string _frequency;
+        private string _detectorType;
+        private string _sufix;
+        private int _index;
+
+        public ProscanDbLinesDataService(IScanerDataFabric scanerDataFabric)
         {
+            _proscanDbLineDatas = new List<IProscanDbLineData>();
+
             _scanerDataFabric = scanerDataFabric;
-            _proscanDatabaseLineData = new List<IProscanDatabaseLineData>();
             _scanerDatas = _scanerDataFabric.CreateScanerDatas();
         }
 
-        public List<IProscanDatabaseLineData> GetData(ScanerType scanerType,
-                                    List<IFrequencyData> freqenciesData)
+        public List<IProscanDbLineData> GetData(List<IFrequencyData> freqenciesData,
+                                                      ScanerType scanerType,
+                                                      string groupFilter)
         {
-            _freqenciesData = freqenciesData;
+            _freqencyDatas = freqenciesData;
             _selectedScanerType = scanerType;
+            _groupFilter = groupFilter;
 
-            UpdateProScanChannelData();
+            UpdateProscanDbChannelDatas();
 
-            return _proscanDatabaseLineData;
+            return _proscanDbLineDatas;
         }
 
-        private void UpdateProScanChannelData()
+        private void UpdateProscanDbChannelDatas()
         {
-            _proscanDatabaseLineData.Clear();
+            ClearProscanDbChannelDatas();
+            FillProscanDbChannelDatasFromFrequencyDatas();
+        }
 
-            string sufix = "";
-            foreach (var scanerData in _scanerDatas) 
-                if(_selectedScanerType == scanerData.ScanerType)
-                {
-                    sufix = scanerData.Sufix;
-                    break;
-                }
+        private void ClearProscanDbChannelDatas() => _proscanDbLineDatas.Clear();
 
-            for (int i = 0; i < _freqenciesData.Count; i++)
+        private void FillProscanDbChannelDatasFromFrequencyDatas()
+        {
+            for (int i = 0; i < _freqencyDatas.Count; i++)
             {
-                IFrequencyData frequencyData = _freqenciesData[i];
-                IProscanDatabaseLineData proscanDatabaseLineData = new ProscanDatabaseLineData(frequencyData.GroupName,
-                                                                        GetProScanLine(i, frequencyData, sufix));
-                _proscanDatabaseLineData.Add(proscanDatabaseLineData);
+                _index = i + 1;
+                _frequencyData = _freqencyDatas[i];
+
+                if (SelectedAll() || ThisIsSelectedGroup())
+                    _proscanDbLineDatas.Add(CreateProscanDbLineData());
             }
         }
 
-        private string GetProScanLine(int index, IFrequencyData frequencyData, string sufix)
+        private bool SelectedAll() => _groupFilter == ALL_GROUP;
+        private bool ThisIsSelectedGroup() => _frequencyData.GroupName == _groupFilter;
+
+        private IProscanDbLineData CreateProscanDbLineData()
+            => new ProscanDbLineData(_frequencyData.GroupName, GetProscanLine());
+
+        private string GetProscanLine()
+        {
+            UpdateProscanDbChannelLineMembers();
+            return GetConcatenatedProscanDbChannelLine(); 
+        }
+
+        private void UpdateProscanDbChannelLineMembers()
+        {
+            _name = GetProscanFormatingName(_frequencyData.Name);
+            _frequency = GetProscanFormatingFrequency(_frequencyData.Frequency);
+            _detectorType = GetProscanDetectorType(_frequencyData.DetectorType);
+            _sufix = GetProscanSufix();
+        }
+
+        private string GetConcatenatedProscanDbChannelLine()
         {
             StringBuilder proScanLine = new StringBuilder();
-
-            string prefix = "CIN";
-            string separator = ",";
-            string name = frequencyData.Name.Replace(',', '.');
-            string frequency = frequencyData.Frequency < 1000000000 ? "0" : "";
-            frequency += (frequencyData.Frequency / 100).ToString();
-            string detectorType = GetProscanDetectorType(frequencyData.DetectorType);
-
-            proScanLine.Append(prefix);
-            proScanLine.Append(separator);
-            proScanLine.Append(index);
-            proScanLine.Append(separator);
-            proScanLine.Append(name);
-            proScanLine.Append(separator);
-            proScanLine.Append(frequency);
-            proScanLine.Append(separator);
-            proScanLine.Append(detectorType);
-            proScanLine.Append(separator);
-            proScanLine.Append(sufix);
-
+            proScanLine.Append(_prefix);
+            proScanLine.Append(_index);
+            proScanLine.Append(_separator);
+            proScanLine.Append(_name);
+            proScanLine.Append(_separator);
+            proScanLine.Append(_frequency);
+            proScanLine.Append(_separator);
+            proScanLine.Append(_detectorType);
+            proScanLine.Append(_separator);
+            proScanLine.Append(_sufix);
             return proScanLine.ToString();
         }
 
-        private string GetProscanDetectorType(string detectorType)
+        private string GetProscanSufix()
         {
-            string proscanDetectorType = ProscanDetectorType.AUTO.ToString();
+            foreach (IScanerData scanerData in _scanerDatas)
+                if (_selectedScanerType == scanerData.ScanerType)
+                    return scanerData.Sufix;
 
-            if (detectorType == ProscanDetectorType.AM.ToString() ||
-                detectorType == ProscanDetectorType.NFM.ToString() ||
-                detectorType == ProscanDetectorType.WFM.ToString())
-                proscanDetectorType = detectorType;
+            return string.Empty;
+        }
 
-            return proscanDetectorType;          
+        private string GetProscanFormatingName(string name) => name.Replace(',', '.');
+
+        private string GetProscanFormatingFrequency(int frequency)
+        {
+            string proscanFequency = frequency < 1000000000 ? "0" : "";
+            proscanFequency += (frequency / 100).ToString();
+            return proscanFequency;
+        }
+
+        private string GetProscanDetectorType(string sdrDetectorType)
+        {
+            if(IsProscanAndSdrDetectorTypesCompatible(sdrDetectorType))
+                return sdrDetectorType;
+            else 
+                return ProscanDetectorType.AUTO.ToString();       
+        }
+
+        private bool IsProscanAndSdrDetectorTypesCompatible(string sdrDetectorType)
+        {
+            return sdrDetectorType == ProscanDetectorType.NFM.ToString()
+                || sdrDetectorType == ProscanDetectorType.WFM.ToString()
+                || sdrDetectorType == ProscanDetectorType.AM.ToString();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using SDRSharp.FreqToProscan.Data;
+using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace SDRSharp.FreqToProscan
@@ -7,6 +9,12 @@ namespace SDRSharp.FreqToProscan
     {
         private const string ALL_GROUP = "All";
         public DataTable Table { get; private set; }
+
+        private string _groupFilter;
+        private Unit _unit;
+
+        private List<IFrequencyData> _frequencyDatas;
+        private IFrequencyData _frequencyData;
 
         public FreqTable() 
         {
@@ -26,45 +34,53 @@ namespace SDRSharp.FreqToProscan
 
         public void UpdateTable(IPluginData pluginData, string groupFilter, Unit unit)
         {
-            List<IFrequencyData> frequencyData = pluginData.Frequencies;
-            Table.Rows.Clear();
+            _groupFilter = groupFilter;
+            _frequencyDatas = pluginData.Frequencies;
+            _unit = unit;
 
-            bool isShowAll = groupFilter == ALL_GROUP;
+            ClearTable();
+            FillTableFromFrequencyDatas();
+        }
 
-            foreach (IFrequencyData data in frequencyData)
+        private void ClearTable() => Table.Rows.Clear();
+
+        private void FillTableFromFrequencyDatas()
+        {
+            foreach (IFrequencyData data in _frequencyDatas)
             {
-                if (isShowAll || data.GroupName == groupFilter)
-                {
-                    Table.Rows.Add(GetFrequencyText(data.Frequency, unit),
-                                    data.DetectorType,
-                                    data.Name,
-                                    unit,
-                                    data.GroupName,
-                                    data.FilterBandwidth);
-                }
+                _frequencyData = data;
+
+                if (SelectedAll() || ThisIsSelectedGroup())
+                    AddTableRow();
             }
+        }
+
+        private bool SelectedAll() => _groupFilter == ALL_GROUP;
+
+        private bool ThisIsSelectedGroup() => _frequencyData.GroupName == _groupFilter;
+
+        private void AddTableRow()
+        {
+            Table.Rows.Add(GetFrequencyText(_frequencyData.Frequency, _unit),
+                            _frequencyData.DetectorType,
+                            _frequencyData.Name,
+                            _unit,
+                            _frequencyData.GroupName,
+                            _frequencyData.FilterBandwidth);
         }
 
         private string GetFrequencyText(float frequency, Unit unit)
         {
-            string format = GetFrequencyFormat(frequency, unit);
+            string format = GetFrequencyFormat(unit);
             return (frequency / (int)(unit)).ToString(format).Replace(',','.');
         }
 
-        public string GetFrequencyFormat(float frequencyHz, Unit unit)
+        public string GetFrequencyFormat(Unit unit)
         {
-            string format = $"";
+            if(unit == Unit.MHz)
+                return "0.000";
 
-            switch (unit)
-            {
-                case Unit.MHz:
-                    format += "0.000";
-                    break;
-                default:
-                    break;
-            }
-
-            return format;
+            return string.Empty;
         }
     }
 }
